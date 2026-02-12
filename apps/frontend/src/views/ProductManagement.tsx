@@ -91,9 +91,10 @@ export default function ProductManagement() {
             }
 
             const token = localStorage.getItem('auth_token');
+            const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
             const url = editingProduct
-                ? `http://localhost:3000/products/${editingProduct.id}`
-                : 'http://localhost:3000/products';
+                ? `${API_BASE_URL}/products/${editingProduct.id}`
+                : `${API_BASE_URL}/products`;
             const method = editingProduct ? 'PATCH' : 'POST';
 
             const response = await fetch(url, {

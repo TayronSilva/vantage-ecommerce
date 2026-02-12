@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              Int            @id @default(autoincrement())
+  cpf             String         @unique
+  name            String?
+  email           String         @unique
+  password        String
+  isActive        Boolean        @default(true)
+  mercadoPagoCustomerId String?  @unique
+  createdAt       DateTime?       @default(now())
+  updatedAt       DateTime?       @updatedAt
+
+  address         Address[]
+  orders          Order[]
+  profiles        UserProfile[]
+  reviews         Review[]
+}
+
+model Address {
+  id         Int      @id @default(autoincrement())
+  name       String
+  zipCode    String
+  phone      String
+  street     String
+  number     String
+  neighborhood String
+  city       String
+  state      String
+  additional String?
+  reference  String?
+  isDefault  Boolean
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  orders     Order[]
+}
+
+model AccessProfile {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  description String?
+  createdAt   DateTime?       @default(now())
+  updatedAt   DateTime?       @updatedAt
+  users       UserProfile[]
+  rules       Rule[]         @relation("ProfileToRules")
+}
+
+model Rule {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  slug           String          @unique
+  description    String?
+  createdAt      DateTime?        @default(now())
+  updatedAt      DateTime?        @updatedAt
+  accessProfiles AccessProfile[] @relation("ProfileToRules")
+}
+
+model UserProfile {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  accessProfileId Int
+  createdAt       DateTime?      @default(now())
+  
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessProfile   AccessProfile @relation(fields: [accessProfileId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, accessProfileId])
+  @@map("UserProfiles")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+
+  products    Product[]
+  @@map("Categories")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  active      Boolean  @default(true)
+
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+
+  weight      Int?    
+  width       Int?    
+  height      Int?     
+  length      Int?    
+
+  gender      String?  
+  oldPrice    Decimal? @db.Decimal(10, 2)
+  isBestSeller Boolean  @default(false)
+
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+
+  stocks      Stock[]
+  images      ProductImages[]
+  reviews     Review[]
+
+  @@map("Products")
+}
+
+
+model Stock {
+  id             String           @id @default(uuid())
+  productId      String
+
+  size           String?
+  color          String?
+  quantity       Int              @default(0)
+
+  product        Product @relation(fields: [productId], references: [id])
+
+  @@unique([productId, size, color])
+  @@map("Stocks")
+}
+
+model ProductImages {
+  id        String  @id @default(uuid())
+  path      String
+  alt       String
+  isMain    Boolean @default(false)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id           String       @id @default(uuid())
+  userId       Int
+  status       OrderStatus  @default(PENDING)
+
+  subtotal     Decimal      @db.Decimal(10, 2)
+  freight      Decimal      @db.Decimal(10, 2)
+  total        Decimal      @db.Decimal(10, 2)
+
+  paymentId    String?    
+  paymentType  String?      
+  paidAt       DateTime?
+
+  expiresAt    DateTime?   
+
+  createdAt    DateTime?     @default(now())
+  updatedAt    DateTime?     @updatedAt
+
+  addressId    Int?
+  address      Address?     @relation(fields: [addressId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  items        OrderItem[]
+  exchanges    Exchange[]
+
+  @@map("Orders")
+}
+
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELED
+  RETURNED
+  EXCHANGED
+  EXCHANGE_REQUESTED
+  EXPIRED
+}
+
+model Exchange {
+  id           String      @id @default(uuid())
+  orderId      String
+  reason       String
+  status       String      @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
+  evidenceUrls String[]    @default([])
+  adminNotes   String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  order        Order       @relation(fields: [orderId], references: [id])
+
+  @@map("Exchanges")
+}
+
+model OrderItem {
+  id           String   @id @default(uuid())
+  orderId      String
+
+  productId    String
+  productName  String
+  productPrice Decimal  @db.Decimal(10, 2)
+
+  stockId      String?
+  size         String?
+  color        String?
+
+  quantity     Int
+
+  order        Order    @relation(fields: [orderId], references: [id])
+
+  @@map("OrderItems")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String?
+  userId    Int
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("Reviews")
+}

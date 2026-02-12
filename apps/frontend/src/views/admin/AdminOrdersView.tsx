@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Package, Search, Eye, Filter, CheckCircle2, XCircle, Truck, Clock, AlertCircle, RefreshCw, Calendar, MapPin, User, Mail, Phone, CreditCard } from 'lucide-react';
+import { Package, Search, Eye, XCircle, Truck, AlertCircle, MapPin, User, Mail, Phone, CreditCard } from 'lucide-react';
 import { orderService } from '../../services/orders';
 import type { Order } from '../../types';
 
@@ -250,7 +250,7 @@ export default function AdminOrdersView() {
                                             {selectedOrder.items?.map((item, i) => (
                                                 <tr key={i}>
                                                     <td className="px-4 py-3">
-                                                        <div className="font-medium text-zinc-900">{item.productName || item.name}</div>
+                                                        <div className="font-medium text-zinc-900">{item.productName}</div>
                                                         <div className="text-xs text-zinc-400">
                                                             {item.color && `Cor: ${item.color}`} {item.size && `| Tam: ${item.size}`}
                                                         </div>

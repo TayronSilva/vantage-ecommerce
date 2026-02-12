@@ -10,6 +10,7 @@ export interface User {
   email: string;
   role: 'OWNER' | 'ADMIN' | 'MANAGER' | 'STAFF' | 'SUPPORT' | 'VIEWER' | 'CUSTOMER';
   isActive: boolean;
+  cpf?: string;
   permissions: string[];
   profiles: any[];
 }

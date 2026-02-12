@@ -9,7 +9,6 @@ import {
     ShieldAlert,
     ArrowLeft,
     CheckCircle2,
-    XCircle,
     Loader2
 } from 'lucide-react';
 import { reviewService, type Review } from '../../services/reviews';

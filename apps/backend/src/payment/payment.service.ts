@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import MercadoPagoConfig, { Payment, Customer, CustomerCard } from 'mercadopago';
 import { PrismaService } from 'database/prisma/prisma.service';
@@ -9,6 +9,7 @@ export class PaymentService {
   private payment: Payment;
   private customer: Customer;
   private customerCard: CustomerCard;
+  private readonly logger = new Logger(PaymentService.name);
 
   constructor(
     private config: ConfigService,
@@ -49,6 +50,8 @@ export class PaymentService {
       },
       requestOptions: { idempotencyKey: `pix-${order.id}` }
     });
+
+    this.logger.log(`PIX Created for Order ${order.id}. Status: ${response.status} (${response.status_detail})`);
 
     const transactionData = response.point_of_interaction?.transaction_data;
 
@@ -156,6 +159,8 @@ export class PaymentService {
         },
         requestOptions: { idempotencyKey: `card-${order.id}-${order.token?.slice(-10)}` }
       });
+
+      this.logger.log(`Card Payment Result for Order ${order.id}: Status=${response.status}, Detail=${response.status_detail}, ID=${response.id}`);
 
       if (response.status === 'approved') {
         await this.markOrderAsPaid(response.id?.toString() || '');

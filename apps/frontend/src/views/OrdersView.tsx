@@ -13,7 +13,6 @@ export default function OrdersView() {
     const [exchangeReason, setExchangeReason] = useState('');
     const [submittingExchange, setSubmittingExchange] = useState(false);
     const [pixQrCode, setPixQrCode] = useState<{ qrCode: string; qrCodeBase64: string } | null>(null);
-    const [loadingPix, setLoadingPix] = useState(false);
 
     useEffect(() => {
         fetchOrders();
@@ -90,15 +89,12 @@ export default function OrdersView() {
 
 
     const fetchPixQrCode = async (orderId: string) => {
-        setLoadingPix(true);
         setPixQrCode(null);
         try {
             const response = await orderService.getPixQrCode(orderId);
             setPixQrCode(response);
         } catch (error) {
             console.error('Erro ao buscar QR Code Pix:', error);
-        } finally {
-            setLoadingPix(false);
         }
     };
 

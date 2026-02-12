@@ -1,0 +1,25 @@
+@echo off
+TITLE Super Painel OneBack
+
+:: 1. DEFINICAO SIMPLIFICADA
+SET "NODE=C:\Users\ATENDDA\Pictures\Saved Pictures\node-v24.12.0-win-x64\node-v24.12.0-win-x64"
+SET "NGROK=C:\Users\ATENDDA\Pictures\Saved Pictures\ngrok-v3-stable-windows-amd64"
+SET "CURSOR=C:\Users\ATENDDA\Pictures\Saved Pictures\cursor\cursor\resources\app\bin"
+SET "ANTI=C:\Users\ATENDDA\Pictures\Saved Pictures\antigravity"
+SET "GIT=C:\Users\ATENDDA\Pictures\Saved Pictures\Git\bin"
+
+:: 2. APLICA O PATH (Apenas o essencial)
+SET "PATH=%NODE%;%NGROK%;%CURSOR%;%ANTI%;%GIT%;%C:\Windows\System32"
+
+cls
+echo ======================================================
+echo          SISTEMA ON - TUDO PRONTO
+echo ======================================================
+echo  [1] npm run start:dev  - Servidor
+echo  [2] ngrok http 3000    - Link Externo
+echo  [3] cursor .           - Abrir Cursor
+echo  [4] Antigravity.exe .  - Abrir Antigravity
+echo  [5] git --version      - Testar Git
+echo ======================================================
+echo.
+cmd /k

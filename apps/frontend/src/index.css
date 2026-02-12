@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --bg-main: #fdfdfd;
+  --accent-blue: #00d1ff;
+}
+
+@layer base {
+  body {
+    @apply bg-[#fdfdfd] text-zinc-900 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Deixa o scroll mais bonito (estilo minimalista) */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-200 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-300;
+  }
+}
+
+@layer components {
+  /* Efeito de vidro para o Header */
+  .glass-header {
+    @apply sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-100;
+  }
+
+  /* Custom scrollbar para o carrinho lateral */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #e4e4e7 transparent;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animação suave de entrada para os produtos */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card-anim {
+  animation: fadeInSlideUp 0.6s ease forwards;
+}
+
+/* Estilo para quando o usuário seleciona um texto */
+::selection {
+  @apply bg-blue-100 text-blue-900;
+}

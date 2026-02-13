@@ -9,8 +9,8 @@ export const userService = {
         return api.post<any>('/users/internal', data);
     },
 
-    async delete(id: number): Promise<void> {
-        return api.delete(`/users/${id}`);
+    async deactivate(id: number): Promise<{ id: number; email: string; isActive: boolean }> {
+        return api.patch(`/users/${id}/deactivate`, {});
     },
 
     async update(id: number, data: any): Promise<any> {

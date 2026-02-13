@@ -74,13 +74,13 @@ export default function UserManagement() {
         }
     };
 
-    const handleDeleteUser = async (id: number) => {
-        if (!confirm('Desativar este usuário permanentemente?')) return;
+    const handleDeactivateUser = async (id: number) => {
+        if (!confirm('Desativar este usuário? Ele não poderá mais acessar o sistema.')) return;
         try {
-            await userService.delete(id);
+            await userService.deactivate(id);
             fetchData();
-        } catch (error) {
-            alert('Erro ao deletar usuário');
+        } catch (error: any) {
+            alert(error?.message || 'Erro ao desativar usuário');
         }
     };
 
@@ -196,7 +196,7 @@ export default function UserManagement() {
                                 </button>
                                 {u.email !== 'admin@onback.com' && (
                                     <button
-                                        onClick={() => handleDeleteUser(u.id)}
+                                        onClick={() => handleDeactivateUser(u.id)}
                                         className="w-12 h-12 bg-zinc-50 text-zinc-300 rounded-2xl flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all"
                                     >
                                         <Trash2 size={18} />

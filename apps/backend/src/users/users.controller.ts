@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Delete, UseGuards, Request, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, UseGuards, Request, NotFoundException, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -55,6 +55,16 @@ export class UsersController {
   @ApiOperation({ summary: 'Deactivate own account' })
   async deactivateMe(@Request() req) {
     const userId = req.user.sub;
+    return this.usersService.deactivateUserAsync(userId);
+  }
+
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @RequirePermission('user:manage')
+  @Patch(':id/deactivate')
+  @ApiOperation({ summary: 'Deactivate user by id (admin)' })
+  async deactivateUser(@Param('id') id: string) {
+    const userId = parseInt(id, 10);
+    if (Number.isNaN(userId)) throw new NotFoundException('User not found');
     return this.usersService.deactivateUserAsync(userId);
   }
 

@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ cart, onViewChange, onOpenCart, onSearc
 
     return (
         <>
-            <header className="flex items-center justify-between px-6 md:px-20 py-6 border-b border-zinc-100 sticky top-0 bg-white/95 backdrop-blur-xl z-50">
+            <header className="flex items-center justify-between px-6 md:px-20 py-6 border-b border-zinc-100 sticky top-0 bg-white/95 backdrop-blur-xl z-50 safe-top">
                 <div className="flex items-center gap-4 cursor-pointer group shrink-0" onClick={() => handleViewChange('home')}>
                     <div className="w-10 h-10 md:w-11 md:h-11 bg-zinc-900 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-all shadow-lg shadow-zinc-200">
                         <span className="text-white font-black text-sm md:text-base">V</span>

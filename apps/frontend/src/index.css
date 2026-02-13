@@ -9,6 +9,9 @@
   body {
     @apply bg-[#fdfdfd] text-zinc-900 antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 
   /* Deixa o scroll mais bonito (estilo minimalista) */
@@ -47,6 +50,34 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Android / mobile: tap targets mínimo 44px para acessibilidade */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Evita zoom indesejado em inputs no iOS/Android (font-size >= 16px) */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  select {
+    font-size: 16px;
+  }
+
+  /* Reduz atraso de toque no Android */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Header/barra fixa: conteúdo abaixo do notch */
+  .safe-top {
+    padding-top: max(1.5rem, env(safe-area-inset-top));
   }
 }
 

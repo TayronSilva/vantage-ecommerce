@@ -183,7 +183,7 @@ export default function CheckoutView({ cart, subtotal, shippingCost, total: _tot
                 if (detail === 'cc_rejected_card_disabled') message = 'Ligue para seu banco para ativar seu cartão.';
                 if (detail === 'cc_rejected_card_error') message = 'Não conseguimos processar seu pagamento.';
                 if (detail === 'cc_rejected_duplicated_payment') message = 'Você já fez um pagamento com esse valor.';
-                if (detail === 'cc_rejected_high_risk') message = 'Seu pagamento foi recusado por segurança.';
+                if (detail === 'cc_rejected_high_risk') message = 'O processador recusou por política de segurança. Tente outro cartão, use PIX (10% OFF) ou desative bloqueador de anúncios e tente novamente.';
                 if (detail === 'cc_rejected_insufficient_amount') message = 'Saldo insuficiente.';
                 if (detail === 'cc_rejected_invalid_installments') message = 'O meio de pagamento não processa pagamentos em parcelas.';
                 if (detail === 'cc_rejected_max_attempts') message = 'Você atingiu o limite de tentativas permitidas.';
@@ -560,8 +560,13 @@ export default function CheckoutView({ cart, subtotal, shippingCost, total: _tot
                                     </div>
 
                                     {paymentMethod === 'card' && !selectedCardId && (
-                                        <div className="mt-12 bg-zinc-50 p-10 rounded-[3rem] border border-zinc-100">
-                                            <CardPaymentForm total={finalTotal} onSubmit={handleCardPayment} loading={loading} />
+                                        <div className="mt-12 space-y-4">
+                                            <p className="text-[10px] text-zinc-500 font-medium px-1">
+                                                Pagamento seguro pelo Mercado Pago. Se aparecer &quot;recusado por segurança&quot;, tente outro cartão ou use PIX. Evite bloqueador de anúncios nesta página.
+                                            </p>
+                                            <div className="bg-zinc-50 p-10 rounded-[3rem] border border-zinc-100">
+                                                <CardPaymentForm total={finalTotal} onSubmit={handleCardPayment} loading={loading} />
+                                            </div>
                                         </div>
                                     )}
 

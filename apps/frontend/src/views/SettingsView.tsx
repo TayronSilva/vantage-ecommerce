@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User, MapPin, Heart, LayoutDashboard, Box, LogOut, ChevronRight, Package, RefreshCcw, Shield, BarChart3, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import AddressView from './AddressView';
@@ -35,6 +35,7 @@ export default function SettingsView() {
     const [loadingExchanges, setLoadingExchanges] = useState(false);
 
     const fetchData = async () => {
+        if (!user) return;
         setLoadingRecentOrders(true);
         setLoadingExchanges(true);
         try {
@@ -45,6 +46,9 @@ export default function SettingsView() {
             setRecentOrders(Array.isArray(ordersData) ? ordersData.slice(0, 3) : []);
             setExchangeRequests(Array.isArray(exchangesData) ? exchangesData : []);
         } catch (error) {
+            if ((error as Error)?.message?.includes('Token') || (error as any)?.response?.status === 401) {
+                return;
+            }
             console.error('Erro ao buscar dados:', error);
         } finally {
             setLoadingRecentOrders(false);
@@ -52,9 +56,9 @@ export default function SettingsView() {
         }
     };
 
-    useState(() => {
-        fetchData();
-    });
+    useEffect(() => {
+        if (user) fetchData();
+    }, [user]);
 
     const getExchangeStatusLabel = (status: string) => {
         const labels: Record<string, string> = {

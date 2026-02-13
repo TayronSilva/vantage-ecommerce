@@ -16,6 +16,7 @@ Monorepo de e-commerce full-stack: **frontend em React (Vite)** e **backend em N
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Funcionalidades principais](#funcionalidades-principais)
 - [Deploy](#deploy)
+- [Licença](#licença)
 
 ---
 
@@ -222,4 +223,8 @@ Para detalhes das rotas da API, veja `apps/backend/README.md` e `apps/backend/RO
 
 ## Licença
 
-Uso conforme definido no repositório (ex.: privado ou MIT).
+Este projeto é **proprietário**. © 2026 **CodGesto**. Todos os direitos reservados.
+
+O uso, cópia, modificação e distribuição do código estão **proibidos** sem autorização prévia por escrito. Consulte o arquivo [LICENSE](./LICENSE) para os termos completos.
+
+Para solicitar permissão de uso ou licenciamento, entre em contato com a CodGesto (por exemplo via Issues ou canais indicados no perfil do repositório).
